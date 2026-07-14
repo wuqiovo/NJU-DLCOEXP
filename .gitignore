@@ -1,2 +1,3 @@
-/.agent/
-/temp/
+/.agents/
+/tmp/
+/xsim.dir/
