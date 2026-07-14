@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/DLCOEXP/lab02/lab02.srcs/sources_1/new/Adder4.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Adder4
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/DLCOEXP/lab02/lab02.srcs/sim_1/new/Adder4_test.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Adder4_test

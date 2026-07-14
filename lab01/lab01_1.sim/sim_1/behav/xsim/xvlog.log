@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/DLCOEXP/lab01_1/lab01_1.srcs/sources_1/new/priority42.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module priority42
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/DLCOEXP/lab01_1/lab01_1.srcs/sim_1/new/priority42_test.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module test_priority42

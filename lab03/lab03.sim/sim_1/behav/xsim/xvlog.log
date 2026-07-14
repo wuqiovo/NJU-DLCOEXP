@@ -1,0 +1,8 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/DLCOEXP/lab03/lab03.srcs/sources_1/new/bcd7seg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module bcd7seg
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/DLCOEXP/lab03/lab03.srcs/sources_1/new/clkgen.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module clkgen
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/DLCOEXP/lab03/lab03.srcs/sources_1/new/exp1.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module exp1
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/DLCOEXP/lab03/lab03.srcs/sim_1/new/exp1_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module exp1_tb
