@@ -1,7 +1,9 @@
-## 说在前面
+# Academic Integrity and Responsible Use
 
-数字逻辑与计算机组成实验这门课毫无疑问是一门**具有很大挑战**的课程。我发布这个仓库是为了和大家更好的讨论这门课程实验的内容，让我们双方都获得成长。
+This repository is published solely for **educational purposes and scholarly reference**. Its contents are intended to support the study of digital logic and computer organization by illustrating possible approaches to the relevant laboratory exercises.
 
-发布这些内容其实是一把双刃剑，当有现成的成果在面前时，很多人都会产生不劳而获的想法。但是，请你务必**在不看任何资料的情况下，独立完成一遍，任何抄袭都是不允许的**。这是对你我双方共同的负责。
+Users are expected to comply fully with the academic integrity policies of their institution. **The materials in this repository must not be copied, reproduced, adapted, or submitted, in whole or in part, as original coursework.** This prohibition applies equally to direct copying and to submissions containing superficial or otherwise insubstantial modifications.
 
-我提交的资料难免有错漏之处，本人对数字逻辑与计算机组实验成这门课的理解也相对有限。因此，如果你有dlcoexp方面的问题或者是发现了本仓库中的错漏，欢迎向1360325578@qq.com发邮件留言，也欢迎加我QQ好友讨论相关问题。
+Any use of material derived from this repository must be properly acknowledged where permitted by the applicable course rules and institutional policies. Access to this repository does not imply authorization to use its contents in assessed work, and users remain solely responsible for determining whether a particular form of reference or reuse is permissible.
+
+I myself does not condone plagiarism, or any other form of academic misconduct, and accepts no responsibility for violations arising from the misuse of these materials. By accessing this repository, users are expected to exercise sound academic judgment and to complete their own work independently.
