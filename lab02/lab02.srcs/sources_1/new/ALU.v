@@ -24,9 +24,9 @@ module alu_s( input [3:0] A,
 			  input [3:0] B,
 			  input [2:0] ALUctr,
 			  output reg [3:0] F,
-			  output reg cf,
-			  output reg zero,
-			  output reg of
+			  output wire cf,
+			  output wire zero,
+			  output wire of
 );
 
     wire [3:0] Adder_F;

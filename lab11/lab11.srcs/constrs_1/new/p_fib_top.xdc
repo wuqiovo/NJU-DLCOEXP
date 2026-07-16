@@ -1,13 +1,6 @@
-## Nexys A7-100T constraints for fib_top
-
+## Nexys A7-100T constraints for p_fib_top
 set_property -dict { PACKAGE_PIN E3 IOSTANDARD LVCMOS33 } [get_ports {CLK100MHZ}]
-create_clock -add -name sys_clk_pin -period 10.000 -waveform {0 5} [get_ports {CLK100MHZ}]
-
-# BTNC creates an irregular single-step clock.  Its shortest low phase is
-# 40 ns (STEP_LOW_CYCLES=4), so use a conservative 80 ns timing model.
-create_clock -add -name cpu_step_clk -period 80.000 -waveform {0 40} \
-    [get_pins {cpu_clock_reg/Q}]
-
+create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports {CLK100MHZ}]
 set_property -dict { PACKAGE_PIN N17 IOSTANDARD LVCMOS33 } [get_ports {BTNC}]
 
 set_property -dict { PACKAGE_PIN J15 IOSTANDARD LVCMOS33 } [get_ports {SW[0]}]
@@ -37,7 +30,6 @@ set_property -dict { PACKAGE_PIN P15 IOSTANDARD LVCMOS33 } [get_ports {HEX[4]}]
 set_property -dict { PACKAGE_PIN T11 IOSTANDARD LVCMOS33 } [get_ports {HEX[5]}]
 set_property -dict { PACKAGE_PIN L18 IOSTANDARD LVCMOS33 } [get_ports {HEX[6]}]
 set_property -dict { PACKAGE_PIN H15 IOSTANDARD LVCMOS33 } [get_ports {HEX[7]}]
-
 set_property -dict { PACKAGE_PIN J17 IOSTANDARD LVCMOS33 } [get_ports {AN[0]}]
 set_property -dict { PACKAGE_PIN J18 IOSTANDARD LVCMOS33 } [get_ports {AN[1]}]
 set_property -dict { PACKAGE_PIN T9  IOSTANDARD LVCMOS33 } [get_ports {AN[2]}]

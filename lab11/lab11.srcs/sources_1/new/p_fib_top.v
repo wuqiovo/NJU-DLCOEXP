@@ -1,12 +1,12 @@
 `timescale 1ns / 1ps
 
-// Nexys A7 board wrapper for the single-step Fibonacci demonstration.
+// Nexys A7 wrapper for the pipelined Fibonacci processor.
 //
 // SW[0]    : active-high reset
 // SW[15:6] : unsigned input n
-// BTNC     : execute one CPU instruction per press
+// BTNC     : execute one CPU clock cycle per press
 // AN/HEX   : input n before completion, then the 32-bit result in hexadecimal
-module fib_top #(
+module p_fib_top #(
     parameter IMEM_INIT_FILE = "fib.hex",
     parameter [20:0] DEBOUNCE_COUNT = 21'd2_000_000,
     parameter [7:0] STEP_LOW_CYCLES = 8'd4
@@ -23,7 +23,7 @@ module fib_top #(
     wire btn_pulse;
     assign board_reset = SW[0];
 
-    fib_debounce_btn #(
+    p_fib_debounce_btn #(
         .CNT_MAX (DEBOUNCE_COUNT)
     ) u_debounce (
         .clk       (CLK100MHZ),
@@ -32,7 +32,7 @@ module fib_top #(
         .btn_pulse (btn_pulse)
     );
 
-    // Synchronize the ten input switches into the 100 MHz board-clock domain.
+    // Synchronize the ten input switches into the board-clock domain.
     reg [9:0] n_sync_0;
     reg [9:0] n_sync_1;
     always @(posedge CLK100MHZ or posedge board_reset) begin
@@ -49,8 +49,8 @@ module fib_top #(
     wire [31:0] external_n;
     assign external_n = {22'b0, n_sync_1};
 
-    // A CPU cycle starts at its falling edge.  The bootstrap state creates one
-    // falling edge while reset is still asserted so instruction 0 is fetched.
+    // A CPU cycle starts at its falling edge. The bootstrap state creates one
+    // falling edge while reset is asserted so instruction 0 is fetched.
     localparam [1:0] BOOT_START = 2'd0,
                      BOOT_LOW   = 2'd1,
                      IDLE       = 2'd2,
@@ -71,7 +71,6 @@ module fib_top #(
         else begin
             case (step_state)
                 BOOT_START: begin
-                    // Fetch instruction 0 at this falling CPU-clock edge.
                     cpu_clock  <= 1'b0;
                     core_reset <= 1'b1;
                     step_count <= 8'b0;
@@ -127,7 +126,7 @@ module fib_top #(
     wire [31:0] dbg_dmem_wdata;
     wire [31:0] dbg_dmem_rdata;
 
-    cpu #(
+    p_cpu #(
         .IMEM_INIT_FILE (IMEM_INIT_FILE)
     ) u_cpu (
         .clock           (cpu_clock),
@@ -142,7 +141,6 @@ module fib_top #(
         .dbg_dmem_rdata  (dbg_dmem_rdata)
     );
 
-    // Display n before completion and the 32-bit result afterwards.
     wire [31:0] display_value;
     assign display_value = fib_valid ? fib_result : external_n;
 
@@ -176,21 +174,19 @@ module fib_top #(
     end
 
     wire [7:0] hex_raw;
-    fib_hex7seg u_hex7seg (
+    p_fib_hex7seg u_hex7seg (
         .value (display_nibble),
         .seg   (hex_raw)
     );
 
-    // Use a LED to indicate validity. 
+    // use a separate LED to indicate validity.
     assign HEX = {1'b1, hex_raw[6:0]};
     assign LED[0] = fib_valid;
 
 endmodule
 
 
-// Debouncer adapted from Common Code.md.  The reset and explicit initial
-// values make its behavior deterministic in both hardware and simulation.
-module fib_debounce_btn #(
+module p_fib_debounce_btn #(
     parameter [20:0] CNT_MAX = 21'd2_000_000
 )(
     input  wire clk,
@@ -207,15 +203,15 @@ module fib_debounce_btn #(
 
     always @(posedge clk or posedge reset) begin
         if (reset) begin
-            btn_sync_0  <= 1'b0;
-            btn_sync_1  <= 1'b0;
-            count       <= 21'b0;
-            btn_stable  <= 1'b0;
+            btn_sync_0   <= 1'b0;
+            btn_sync_1   <= 1'b0;
+            count        <= 21'b0;
+            btn_stable   <= 1'b0;
             btn_stable_d <= 1'b0;
         end
         else begin
-            btn_sync_0 <= btn_in;
-            btn_sync_1 <= btn_sync_0;
+            btn_sync_0   <= btn_in;
+            btn_sync_1   <= btn_sync_0;
             btn_stable_d <= btn_stable;
 
             if (btn_sync_1 == btn_stable) begin
@@ -236,9 +232,9 @@ module fib_debounce_btn #(
 endmodule
 
 
-// Active-low hexadecimal decoder for the Nexys A7 seven-segment display.
+// Active-low Nexys A7 hexadecimal decoder.
 // seg[7:0] = {DP, CG, CF, CE, CD, CC, CB, CA}.
-module fib_hex7seg(
+module p_fib_hex7seg(
     input  wire [3:0] value,
     output reg  [7:0] seg
     );
