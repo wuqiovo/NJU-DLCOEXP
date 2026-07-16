@@ -1,12 +1,12 @@
 // Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2022.1 (win64) Build 3526262 Mon Apr 18 15:48:16 MDT 2022
-// Date        : Sun Jul 12 23:11:30 2026
+// Date        : Thu Jul 16 19:28:34 2026
 // Host        : laptop_070628 running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode synth_stub d:/DLCOEXP/lab08/lab08.gen/sources_1/ip/clk_wiz_0/clk_wiz_0_stub.v
 // Design      : clk_wiz_0
 // Purpose     : Stub declaration of top-level module interface
-// Device      : xc7k70tfbv676-1
+// Device      : xc7a100tcsg324-1
 // --------------------------------------------------------------------------------
 
 // This empty module with port declaration file causes synthesis tools to infer a black box for IP.

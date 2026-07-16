@@ -2,8 +2,8 @@
 # Vivado v2022.1 (64-bit)
 # SW Build 3526262 on Mon Apr 18 15:48:16 MDT 2022
 # IP Build 3524634 on Mon Apr 18 20:55:01 MDT 2022
-# Start of session at: Sun Jul 12 23:11:07 2026
-# Process ID: 9672
+# Start of session at: Thu Jul 16 19:28:13 2026
+# Process ID: 23568
 # Current directory: D:/DLCOEXP/lab08/lab08.runs/clk_wiz_0_synth_1
 # Command line: vivado.exe -log clk_wiz_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source clk_wiz_0.tcl
 # Log file: D:/DLCOEXP/lab08/lab08.runs/clk_wiz_0_synth_1/clk_wiz_0.vds
