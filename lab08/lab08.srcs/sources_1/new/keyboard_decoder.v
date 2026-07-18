@@ -18,6 +18,10 @@ module keyboard_decoder (
     output reg  [7:0] event_ascii,
     output reg        event_enter,
     output reg        event_backspace,
+    output reg        event_left,
+    output reg        event_right,
+    output reg        event_up,
+    output reg        event_down,
 
     output wire       shift_down
     );
@@ -111,6 +115,10 @@ module keyboard_decoder (
             event_ascii      <= 8'h00;
             event_enter      <= 1'b0;
             event_backspace  <= 1'b0;
+            event_left       <= 1'b0;
+            event_right      <= 1'b0;
+            event_up         <= 1'b0;
+            event_down       <= 1'b0;
         end
         else begin
             if (event_valid && event_ready)
@@ -140,16 +148,65 @@ module keyboard_decoder (
                     extended_pending <= 1'b0;
                 end
                 else if (extended_pending) begin
-                    // Direction keys are intentionally left for a later
-                    // extension. Consume the make code without emitting an
-                    // event so it cannot be mistaken for a normal key.
                     extended_pending <= 1'b0;
+
+                    // PS/2 Set-2 direction-key make codes. Release sequences
+                    // (E0 F0 xx) are consumed by break_pending above.
+                    case (scan_code)
+                        8'h6B: begin // Left
+                            event_ascii     <= 8'h00;
+                            event_enter     <= 1'b0;
+                            event_backspace <= 1'b0;
+                            event_left      <= 1'b1;
+                            event_right     <= 1'b0;
+                            event_up        <= 1'b0;
+                            event_down      <= 1'b0;
+                            event_valid     <= 1'b1;
+                        end
+                        8'h74: begin // Right
+                            event_ascii     <= 8'h00;
+                            event_enter     <= 1'b0;
+                            event_backspace <= 1'b0;
+                            event_left      <= 1'b0;
+                            event_right     <= 1'b1;
+                            event_up        <= 1'b0;
+                            event_down      <= 1'b0;
+                            event_valid     <= 1'b1;
+                        end
+                        8'h75: begin // Up
+                            event_ascii     <= 8'h00;
+                            event_enter     <= 1'b0;
+                            event_backspace <= 1'b0;
+                            event_left      <= 1'b0;
+                            event_right     <= 1'b0;
+                            event_up        <= 1'b1;
+                            event_down      <= 1'b0;
+                            event_valid     <= 1'b1;
+                        end
+                        8'h72: begin // Down
+                            event_ascii     <= 8'h00;
+                            event_enter     <= 1'b0;
+                            event_backspace <= 1'b0;
+                            event_left      <= 1'b0;
+                            event_right     <= 1'b0;
+                            event_up        <= 1'b0;
+                            event_down      <= 1'b1;
+                            event_valid     <= 1'b1;
+                        end
+                        default: begin
+                            // Ignore unsupported extended make codes.
+                        end
+                    endcase
                 end
                 else if (scan_code == 8'h5A) begin
                     // Enter pressed 
                     event_ascii     <= 8'h00;
                     event_enter     <= 1'b1;
                     event_backspace <= 1'b0;
+                    event_left      <= 1'b0;
+                    event_right     <= 1'b0;
+                    event_up        <= 1'b0;
+                    event_down      <= 1'b0;
                     event_valid     <= 1'b1;
                 end
                 else if (scan_code == 8'h66) begin
@@ -157,6 +214,10 @@ module keyboard_decoder (
                     event_ascii     <= 8'h00;
                     event_enter     <= 1'b0;
                     event_backspace <= 1'b1;
+                    event_left      <= 1'b0;
+                    event_right     <= 1'b0;
+                    event_up        <= 1'b0;
+                    event_down      <= 1'b0;
                     event_valid     <= 1'b1;
                 end
                 else begin
@@ -164,6 +225,10 @@ module keyboard_decoder (
                         event_ascii     <= decoded_ascii;
                         event_enter     <= 1'b0;
                         event_backspace <= 1'b0;
+                        event_left      <= 1'b0;
+                        event_right     <= 1'b0;
+                        event_up        <= 1'b0;
+                        event_down      <= 1'b0;
                         event_valid     <= 1'b1;
                     end
                 end

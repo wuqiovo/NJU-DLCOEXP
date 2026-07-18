@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 // Data flow:
-//   PS/2 pins -> ps2_keyboard -> keyboard_decoder -> terminal_ctrl
+//   PS/2 pins -> ps2_keyboard -> keyboard_decoder -> terminal_editor
 //                                                    |
 //                                                    v
 //                         VGA <- text_renderer <- text_vram
@@ -22,6 +22,7 @@ module exp(
 
     wire board_reset;
     wire CLK25MHZ;
+    wire CLK100MHZ_BUF;
     wire clk_locked;
     wire system_reset;
 
@@ -38,7 +39,7 @@ module exp(
     wire       scan_ready;
 
     ps2_keyboard u_ps2_keyboard (
-        .clk        (CLK100MHZ),
+        .clk        (CLK100MHZ_BUF),
         .clrn       (~system_reset),
         .ps2_clk    (PS2_CLK),
         .ps2_data   (PS2_DATA),
@@ -50,7 +51,7 @@ module exp(
 
     // nextdata_n is an active-low FIFO acknowledgement. Only pop a byte when
     // keyboard_decoder is able to accept it. This provides back-pressure while
-    // terminal_ctrl is clearing a row during scrolling.
+    // terminal_editor is shifting or redrawing text.
     assign ps2_nextdata_n = ~(ps2_ready && scan_ready);
 
     wire       key_valid;
@@ -58,10 +59,14 @@ module exp(
     wire [7:0] key_ascii;
     wire       key_enter;
     wire       key_backspace;
+    wire       key_left;
+    wire       key_right;
+    wire       key_up;
+    wire       key_down;
     wire       shift_down;
 
     keyboard_decoder u_keyboard_decoder (
-        .clk             (CLK100MHZ),
+        .clk             (CLK100MHZ_BUF),
         .reset           (system_reset),
         .scan_valid      (ps2_ready),
         .scan_code       (ps2_keyboard_data),
@@ -71,6 +76,10 @@ module exp(
         .event_ascii     (key_ascii),
         .event_enter     (key_enter),
         .event_backspace (key_backspace),
+        .event_left      (key_left),
+        .event_right     (key_right),
+        .event_up        (key_up),
+        .event_down      (key_down),
         .shift_down      (shift_down)
     );
 
@@ -85,14 +94,18 @@ module exp(
     wire [4:0] row_base;
     wire       terminal_busy;
 
-    terminal_ctrl u_terminal_ctrl (
-        .clk             (CLK100MHZ),
+    terminal_editor u_terminal_editor (
+        .clk             (CLK100MHZ_BUF),
         .reset           (system_reset),
         .event_valid     (key_valid),
         .event_ready     (key_ready),
         .event_ascii     (key_ascii),
         .event_enter     (key_enter),
         .event_backspace (key_backspace),
+        .event_left      (key_left),
+        .event_right     (key_right),
+        .event_up        (key_up),
+        .event_down      (key_down),
         .vram_wr_en      (vram_wr_en),
         .vram_wr_addr    (vram_wr_addr),
         .vram_wr_data    (vram_wr_data),
@@ -108,7 +121,7 @@ module exp(
     wire [7:0]  vram_rd_data;
 
     text_vram u_text_vram (
-        .wr_clk  (CLK100MHZ),
+        .wr_clk  (CLK100MHZ_BUF),
         .wr_en   (vram_wr_en),
         .wr_addr (vram_wr_addr),
         .wr_data (vram_wr_data),
@@ -170,6 +183,7 @@ module exp(
         .reset    (board_reset),
         .clk_in1  (CLK100MHZ),
         .clk_out1 (CLK25MHZ),
+        .clk_out2 (CLK100MHZ_BUF),
         .locked   (clk_locked)
     );
 

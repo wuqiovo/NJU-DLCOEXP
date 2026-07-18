@@ -1,0 +1,32 @@
+## Nexys A7-100T constraints for lab12_top
+
+## 100 MHz board clock
+set_property -dict { PACKAGE_PIN E3 IOSTANDARD LVCMOS33 } [get_ports {CLK100MHZ}]
+create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports {CLK100MHZ}]
+
+## Reset switch and clock-lock indicator
+set_property -dict { PACKAGE_PIN J15 IOSTANDARD LVCMOS33 } [get_ports {SW[0]}]
+set_property -dict { PACKAGE_PIN H17 IOSTANDARD LVCMOS33 } [get_ports {LED[0]}]
+
+## USB HID PS/2 keyboard interface
+set_property -dict { PACKAGE_PIN F4 IOSTANDARD LVCMOS33 } [get_ports {PS2_CLK}]
+set_property -dict { PACKAGE_PIN B2 IOSTANDARD LVCMOS33 } [get_ports {PS2_DATA}]
+
+## VGA connector
+set_property -dict { PACKAGE_PIN A3 IOSTANDARD LVCMOS33 } [get_ports {VGA_R[0]}]
+set_property -dict { PACKAGE_PIN B4 IOSTANDARD LVCMOS33 } [get_ports {VGA_R[1]}]
+set_property -dict { PACKAGE_PIN C5 IOSTANDARD LVCMOS33 } [get_ports {VGA_R[2]}]
+set_property -dict { PACKAGE_PIN A4 IOSTANDARD LVCMOS33 } [get_ports {VGA_R[3]}]
+
+set_property -dict { PACKAGE_PIN C6 IOSTANDARD LVCMOS33 } [get_ports {VGA_G[0]}]
+set_property -dict { PACKAGE_PIN A5 IOSTANDARD LVCMOS33 } [get_ports {VGA_G[1]}]
+set_property -dict { PACKAGE_PIN B6 IOSTANDARD LVCMOS33 } [get_ports {VGA_G[2]}]
+set_property -dict { PACKAGE_PIN A6 IOSTANDARD LVCMOS33 } [get_ports {VGA_G[3]}]
+
+set_property -dict { PACKAGE_PIN B7 IOSTANDARD LVCMOS33 } [get_ports {VGA_B[0]}]
+set_property -dict { PACKAGE_PIN C7 IOSTANDARD LVCMOS33 } [get_ports {VGA_B[1]}]
+set_property -dict { PACKAGE_PIN D7 IOSTANDARD LVCMOS33 } [get_ports {VGA_B[2]}]
+set_property -dict { PACKAGE_PIN D8 IOSTANDARD LVCMOS33 } [get_ports {VGA_B[3]}]
+
+set_property -dict { PACKAGE_PIN B11 IOSTANDARD LVCMOS33 } [get_ports {VGA_HS}]
+set_property -dict { PACKAGE_PIN B12 IOSTANDARD LVCMOS33 } [get_ports {VGA_VS}]
