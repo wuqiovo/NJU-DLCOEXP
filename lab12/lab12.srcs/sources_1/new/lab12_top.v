@@ -141,7 +141,7 @@ module lab12_top(
     );
     
     imem #(
-        .INIT_FILE      ("")
+        .INIT_FILE      ("main.hex")
     ) u_imem (
         .address        (imemaddr[17:2]),
         .clock          (imemclk),
@@ -149,10 +149,10 @@ module lab12_top(
     );
     
     dmem #(
-        .INIT_FILE0     (""),
-        .INIT_FILE1     (""),
-        .INIT_FILE2     (""),
-        .INIT_FILE3     ("")
+        .INIT_FILE0     ("main_d0.hex"),
+        .INIT_FILE1     ("main_d1.hex"),
+        .INIT_FILE2     ("main_d2.hex"),
+        .INIT_FILE3     ("main_d3.hex")
     ) u_dmem (
         .addr           (dmem_local_addr),
         .dataout        (dmem_rdata),

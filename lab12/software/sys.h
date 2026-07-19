@@ -3,6 +3,18 @@
 
 #include <stdint.h>
 
+#define VRAM_BASE_ADDR        0x00200000u
+#define VGA_ROW_BASE_ADDR     0x00201000u
+#define VGA_CURSOR_X_ADDR     0x00201004u
+#define VGA_CURSOR_Y_ADDR     0x00201008u
+
+#define KEYBOARD_HEAD_ADDR    0x00300000u
+#define KEYBOARD_TAIL_ADDR    0x00300004u
+#define KEYBOARD_BUFFER_ADDR  0x00300100u
+#define KEYBOARD_FIFO_MASK    31u
+
+#define TIMER_MILLIS_ADDR     0x00400000u
+
 // 显示接口
 // 用index表示字符单元编号
 // VRAM 地址从 0x0020_0000 开始
