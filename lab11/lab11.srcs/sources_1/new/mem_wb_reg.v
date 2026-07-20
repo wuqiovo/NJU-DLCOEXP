@@ -17,7 +17,7 @@ module mem_wb_reg(
     output reg  [1:0]  wb_ctrl_out
     );
 
-    always @(negedge clock or posedge reset) begin
+    always @(negedge clock) begin
         if (reset) begin
             alu_result_out <= 32'b0;
             mem_out_out    <= 32'b0;

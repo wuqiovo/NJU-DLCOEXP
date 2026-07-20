@@ -20,7 +20,7 @@ module ex_mem_reg(
     output reg  [1:0]  wb_ctrl_out
     );
 
-    always @(negedge clock or posedge reset) begin
+    always @(negedge clock) begin
         if (reset) begin
             alu_result_out <= 32'b0;
             rs2_data_out   <= 32'b0;

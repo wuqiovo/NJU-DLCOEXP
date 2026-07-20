@@ -88,7 +88,7 @@ module p_cpu #(
     );
 
     // A store to FIB_RESULT_ADDR is the program's output operation.
-    always @(posedge dmem_wrclk or posedge reset) begin
+    always @(posedge dmem_wrclk) begin
         if (reset) begin
             fib_result <= 32'b0;
             fib_valid  <= 1'b0;

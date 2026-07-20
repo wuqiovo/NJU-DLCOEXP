@@ -14,6 +14,12 @@
 #define KEYBOARD_FIFO_MASK    31u
 
 #define TIMER_MILLIS_ADDR     0x00400000u
+#define TIMER_CYCLES_ADDR     0x00400004u
+
+#define LED_VALUE_ADDR        0x00500000u
+#define SEG_VALUE_ADDR        0x00500004u
+#define SEG_ENABLE_ADDR       0x00500008u
+#define SEG_DP_ADDR           0x0050000Cu
 
 // 显示接口
 // 用index表示字符单元编号
@@ -47,8 +53,19 @@ char keyboard_getchar(void);
 
 // 返回系统启动之后经过的毫秒数
 uint32_t timer_millis(void);
+uint32_t timer_cycles(void);
 
 // 阻塞等待指定毫秒数。
 void timer_delay(uint32_t milliseconds);
+
+// 写入 led 显示
+// 16位开关码，1 - on, 0 - off
+void led_write(uint16_t value);
+
+// 数码管相关
+// 依次为：显示数据写入，使能，小数点
+void seg_write(uint32_t value);
+void seg_enable(uint8_t mask);
+void seg_dp(uint8_t mask);
 
 #endif // SYS_H

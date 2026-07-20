@@ -17,7 +17,7 @@ module if_id_reg(
     // A pipeline cycle starts and ends on the falling edge.
     // Stall has priority over flush: an instruction waiting for data must
     // remain in this stage until the hazard disappears.
-    always @(negedge clock or posedge reset) begin
+    always @(negedge clock) begin
         if (reset) begin
             pc_out    <= 32'b0;
             instr_out <= 32'b0;

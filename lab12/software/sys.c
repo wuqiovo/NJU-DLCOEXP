@@ -67,10 +67,31 @@ uint32_t timer_millis(void)
     return mmio_read32(TIMER_MILLIS_ADDR);
 }
 
+uint32_t timer_cycles(void) 
+{
+    return mmio_read32(TIMER_CYCLES_ADDR);
+}
+
 void timer_delay(uint32_t milliseconds)
 {
     uint32_t start = timer_millis();
     while ((uint32_t)(timer_millis() - start) < milliseconds) {
         /* busy wait */
     }
+}
+
+void led_write(uint16_t value) {
+    mmio_write32(LED_VALUE_ADDR, (uint32_t)value);
+}
+
+void seg_write(uint32_t value) {
+    mmio_write32(SEG_VALUE_ADDR, value);
+}
+
+void seg_enable(uint8_t mask) {
+    mmio_write32(SEG_ENABLE_ADDR, (uint32_t)mask);
+}
+
+void seg_dp(uint8_t mask) {
+    mmio_write32(SEG_DP_ADDR, (uint32_t)mask);
 }

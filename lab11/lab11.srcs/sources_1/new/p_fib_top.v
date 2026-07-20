@@ -35,7 +35,7 @@ module p_fib_top #(
     // Synchronize the ten input switches into the board-clock domain.
     reg [9:0] n_sync_0;
     reg [9:0] n_sync_1;
-    always @(posedge CLK100MHZ or posedge board_reset) begin
+    always @(posedge CLK100MHZ) begin
         if (board_reset) begin
             n_sync_0 <= 10'b0;
             n_sync_1 <= 10'b0;
@@ -61,7 +61,7 @@ module p_fib_top #(
     reg       cpu_clock;
     reg       core_reset;
 
-    always @(posedge CLK100MHZ or posedge board_reset) begin
+    always @(posedge CLK100MHZ) begin
         if (board_reset) begin
             step_state <= BOOT_START;
             step_count <= 8'b0;
@@ -148,7 +148,7 @@ module p_fib_top #(
     wire [2:0] scan_index;
     assign scan_index = scan_count[18:16];
 
-    always @(posedge CLK100MHZ or posedge board_reset) begin
+    always @(posedge CLK100MHZ) begin
         if (board_reset)
             scan_count <= 19'b0;
         else
@@ -201,7 +201,7 @@ module p_fib_debounce_btn #(
     reg btn_stable;
     reg btn_stable_d;
 
-    always @(posedge clk or posedge reset) begin
+    always @(posedge clk) begin
         if (reset) begin
             btn_sync_0   <= 1'b0;
             btn_sync_1   <= 1'b0;

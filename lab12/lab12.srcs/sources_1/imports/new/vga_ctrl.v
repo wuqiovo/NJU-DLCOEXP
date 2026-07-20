@@ -55,7 +55,7 @@ module vga_ctrl(
     wire v_valid;
 
     // Horizontal counter
-    always @(posedge reset or posedge pclk) begin
+    always @(posedge reset) begin
         if (reset == 1'b1)
             x_cnt <= 10'd1;
         else begin

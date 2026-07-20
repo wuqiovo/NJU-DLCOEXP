@@ -136,7 +136,7 @@ module rv32ip(
     assign instr = ID_instr;
     
     // IF part 
-    always @(negedge clock or posedge reset) begin
+    always @(negedge clock) begin
         if (reset)
             IF_PC <= 32'b0;
         else if (stallIF)

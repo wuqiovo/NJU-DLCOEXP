@@ -21,12 +21,14 @@ LDFLAGS := -march=rv32i -mabi=ilp32 \
            -Wl,--gc-sections \
            -Wl,-Map,$(BUILD)/firmware.map
 
-HEADERS := sys.h terminal.h command.h
+HEADERS := sys.h terminal.h command.h benchmark.h expression.h
 OBJS := $(BUILD)/entry.o \
 		$(BUILD)/main.o \
 		$(BUILD)/sys.o \
 		$(BUILD)/terminal.o \
-		$(BUILD)/command.o
+		$(BUILD)/command.o	\
+		$(BUILD)/benchmark.o \
+		$(BUILD)/expression.o
 
 .PHONY: all clean
 

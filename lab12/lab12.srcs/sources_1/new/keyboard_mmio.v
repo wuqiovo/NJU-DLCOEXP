@@ -104,7 +104,7 @@ module keyboard_mmio(
         end
     end
 
-    always @(posedge cpu_wrclk or posedge reset) begin
+    always @(posedge cpu_wrclk) begin
         if (reset) begin
             key_head <= 5'd0;
         end
@@ -115,7 +115,7 @@ module keyboard_mmio(
         end
     end                            
     
-    always @(posedge clk or posedge reset) begin
+    always @(posedge clk) begin
         if (reset) begin
             key_tail <= 5'd0;
         end

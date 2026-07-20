@@ -44,7 +44,7 @@ module id_ex_reg(
     output reg  [1:0]  wb_ctrl_out
     );
 
-    always @(negedge clock or posedge reset) begin
+    always @(negedge clock) begin
         if (reset) begin
             pc_out       <= 32'b0;
             imm_out      <= 32'b0;

@@ -83,7 +83,7 @@ module rv32is(
     wire zero;   
     wire [31:0] alu_result;                      
 
-    always @(negedge clock or posedge reset) begin
+    always @(negedge clock) begin
         if (reset)
             pc <= 32'b0;
         else

@@ -3,7 +3,6 @@
 module lab12_top(
     input   [0:0]   SW,
     input           CLK100MHZ,
-    output  [0:0]   LED,
    
     output  [3:0]   VGA_R,
     output  [3:0]   VGA_G,
@@ -12,24 +11,27 @@ module lab12_top(
     output          VGA_VS,
     
     input           PS2_CLK,
-    input           PS2_DATA 
+    input           PS2_DATA,
+    
+    output  [7:0]   AN,
+    output  [7:0]   HEX,
+    output  [15:0]  LED
     );
     
     // Address decode base 
-    localparam DATA_BASE  = 32'h0010_0000;
-    localparam VGA_BASE   = 32'h0020_0000;
-    localparam KEY_BASE   = 32'h0030_0000;
-    localparam TIMER_BASE = 32'h0040_0000;
+    localparam DATA_BASE    = 32'h0010_0000;
+    localparam VGA_BASE     = 32'h0020_0000;
+    localparam KEY_BASE     = 32'h0030_0000;
+    localparam TIMER_BASE   = 32'h0040_0000;
+    localparam DISPLAY_BASE = 32'h0050_0000;
     
     // Basic wire definition
     wire clk25;
     wire clk_locked;
     wire board_reset;
     wire system_reset;
-    
-    assign LED[0] = clk_locked;
+
     assign board_reset  = SW[0];
-    assign system_reset = board_reset | ~clk_locked;
     
     // Instruction memory wire definition  
     wire  [31:0]   imemaddr;
@@ -82,6 +84,9 @@ module lab12_top(
 	
 	// Timer wire 
 	wire  [31:0]   timer_rdata; 
+	
+	// Display wire 
+	wire display_we;
     
     // Memory mapping 
     wire select_dmem =
@@ -98,10 +103,14 @@ module lab12_top(
     
     wire select_keyboard = daddr[31:20] == 12'h003;
     wire select_timer    = daddr[31:20] == 12'h004;
+    wire select_display  = 
+        daddr >= 32'h0050_0000 &&
+        daddr <  32'h0050_0010;
     
     assign dmem_local_addr = daddr - DATA_BASE;
     assign dmem_we = cpu_we && select_dmem;
     assign vram_we = cpu_we && select_vram && (dmemop == 3'b000);
+    assign display_we = cpu_we && select_display;
     
     always @(*) begin
         if (select_dmem)
@@ -117,9 +126,21 @@ module lab12_top(
     clk_wiz_0 u_clk_wiz_0 (
         .clk_in1    (CLK100MHZ),
         .clk_out1   (clk25),
-        .reset      (board_reset),
+        .reset      (1'b0),
         .locked     (clk_locked)
     );
+    
+    wire reset_request = board_reset | ~clk_locked;
+    reg [1:0] reset_sync;
+
+    always @(posedge clk25) begin
+        if (reset_request)
+            reset_sync <= 2'b11;
+        else
+            reset_sync <= {reset_sync[0], 1'b0};
+    end
+
+    assign system_reset = reset_sync[1];
     
     rv32ip u_rv32ip (
         .clock          (clk25),
@@ -176,7 +197,7 @@ module lab12_top(
         .rd_data (vram_rd_data)
     );
     
-    always @(posedge dmemwrclk or posedge system_reset) begin
+    always @(posedge dmemwrclk) begin
         if (system_reset) begin
             row_base <= 5'd0;
             cursor_x <= 7'd0;
@@ -258,6 +279,21 @@ module lab12_top(
         .reset (system_reset),
         .addr  (daddr),
         .rdata (timer_rdata)
+    );
+    
+    display_mmio u_display (
+        .scan_clk   (clk25),
+        .wrclk      (dmemwrclk),
+        .reset      (system_reset),
+        
+        .cpu_addr   (daddr),
+        .cpu_wdata  (dmem_wdata),
+        .cpu_memop  (dmemop),
+        .cpu_we     (display_we),
+        
+        .LED        (LED),
+        .AN         (AN),
+        .HEX        (HEX)
     );
     
 endmodule
